@@ -1,0 +1,14 @@
+-- Trigger to update status siswa to ACTIVE if NEW status
+
+CREATE or REPLACE FUNCTION change_siswa_status()
+RETURNS TRIGGER
+AS
+$$
+BEGIN
+	raise notice 'last idtest %', NEW.siswa_id;
+	UPDATE siswa SET status = 'ACTIVE' WHERE id = NEW.siswa_id AND status='NEW';
+	
+	return NEW;
+END
+$$
+LANGUAGE plpgsql;

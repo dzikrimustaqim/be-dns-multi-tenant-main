@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: dns
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5438:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  app:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: dns
+      DB_USER: user
+      DB_PASSWORD: password
+      JWT_SECRET: your_jwt_secret_key_here
+      JWT_EXPIRES_IN: 24h
+      RUN_MIGRATIONS_ON_STARTUP: true
+      RUN_TENANT_MIGRATIONS_ON_STARTUP: true
+      LOG_LEVEL: debug
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    networks:
+      - backend
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:

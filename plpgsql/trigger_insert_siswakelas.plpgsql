@@ -1,0 +1,3 @@
+CREATE TRIGGER update_siswa_status AFTER INSERT ON siswakelas
+FOR EACH ROW
+EXECUTE PROCEDURE change_siswa_status();
