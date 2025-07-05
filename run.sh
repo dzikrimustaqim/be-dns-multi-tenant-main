@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "🚀 [1/3] Cleaning up old containers..."
-docker compose down --remove-orphans
+docker compose down --volumes --remove-orphans --rmi all
 
 echo "🔨 [2/3] Building fresh Docker images..."
 docker compose build --no-cache

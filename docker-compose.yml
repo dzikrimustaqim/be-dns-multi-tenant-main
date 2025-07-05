@@ -12,6 +12,11 @@ services:
       - "5438:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       - backend
 
@@ -33,9 +38,10 @@ services:
       RUN_TENANT_MIGRATIONS_ON_STARTUP: true
       LOG_LEVEL: debug
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
-      - .:/app
+      - /app/node_modules
     networks:
       - backend
 
@@ -44,3 +50,4 @@ volumes:
 
 networks:
   backend:
+
