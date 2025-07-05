@@ -1,33 +1,33 @@
 #!/bin/bash
 
-echo "🧼 Pembersihan Docker Total Dimulai..."
+echo "🧼 Starting full Docker environment cleanup..."
 
 # 1. Stop all running containers
-echo "🛑 Menghentikan semua container..."
+echo "🛑 Stopping all running containers..."
 docker stop $(docker ps -aq) 2>/dev/null
 
 # 2. Remove all containers
-echo "🧹 Menghapus semua container..."
+echo "🧹 Removing all containers..."
 docker rm -f $(docker ps -aq) 2>/dev/null
 
 # 3. Remove all images
-echo "🗑️ Menghapus semua image..."
+echo "🗑️ Removing all Docker images..."
 docker rmi -f $(docker images -aq) 2>/dev/null
 
 # 4. Remove all volumes
-echo "📦 Menghapus semua volume..."
+echo "📦 Removing all Docker volumes..."
 docker volume rm -f $(docker volume ls -q) 2>/dev/null
 
 # 5. Remove custom networks
-echo "🌐 Menghapus semua jaringan custom..."
+echo "🌐 Removing all custom Docker networks..."
 docker network rm $(docker network ls | grep -v "bridge\|host\|none" | awk '{print $1}') 2>/dev/null
 
-# 6. Prune build cache
-echo "🧱 Membersihkan build cache..."
+# 6. Clean up build cache
+echo "🧱 Pruning Docker build cache..."
 docker builder prune -a --force
 
-# 7. Prune dangling system resources
-echo "🧨 Membersihkan resource sisa lainnya..."
+# 7. Remove unused system resources
+echo "🧨 Pruning unused Docker resources and volumes..."
 docker system prune -a --volumes --force
 
-echo "✅ Semua bersih! Docker kamu kini suci kembali ✨"
+echo "✅ Cleanup complete: Docker environment has been fully reset."
