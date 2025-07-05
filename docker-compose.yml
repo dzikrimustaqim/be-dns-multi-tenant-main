@@ -24,19 +24,8 @@ services:
     build: .
     ports:
       - "3001:3001"
-    environment:
-      NODE_ENV: development
-      PORT: 3001
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_NAME: dns
-      DB_USER: user
-      DB_PASSWORD: password
-      JWT_SECRET: your_jwt_secret_key_here
-      JWT_EXPIRES_IN: 24h
-      RUN_MIGRATIONS_ON_STARTUP: true
-      RUN_TENANT_MIGRATIONS_ON_STARTUP: true
-      LOG_LEVEL: debug
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy
